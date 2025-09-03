@@ -1,6 +1,6 @@
 import { UserModel } from "../models/UserModel";
 
-class UserService {
+export class UserService {
     constructor() {
         this.users = new Map();
     }
@@ -38,7 +38,7 @@ class UserService {
     }
 
     getUserCount() {
-        return this.users.size();
+        return this.users.size;
     }
 
     clear(){

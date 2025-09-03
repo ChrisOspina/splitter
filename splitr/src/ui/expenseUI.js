@@ -8,21 +8,21 @@ export class ExpenseUI {
 
         this.initializeUIElements();
         this.bindEventListeners();
-        this.intilaizeSelectBox();  
+        //this.intilaizeSelectBox();  
         //this.populateExpenseSelectBox();
     }
 
 //Initialize all UI elements
 initializeUIElements() {
     this.elements={
-        addUserForm: DOMHelpers.getElementById("addUserForm"),
-        userName: DOMHelpers.getElementById("userName"),
+        addUserForm: DOMHelpers.getElementbyId("addUserForm"),
+        userName: DOMHelpers.getElementbyId("userName"),
     }
 }
 
 // bind event listeners to UI elements
 bindEventListeners(){
-    this.elements.addUserForm.addUserForm("submit", (e) => {
+    this.elements.addUserForm.addEventListener("submit", (e) => {
        this.handleAddUserFormSubmit(e);
     })
 }
@@ -40,15 +40,12 @@ handleAddUserFormSubmit(e) {
         this.elements.addUserForm.reset();
         
         console.log("User added:", user);   
+        console.log("All Users:", this.userService.getUserCount());   
+
 
     }catch(error){
         console.error("Error adding user:", error);
     }
-    /*const formData = new FormData(this.elements.addUserForm);
-    const userName = formData.get("userName");
-    this.userService.addUser(userName);
-    this.elements.addUserForm.reset();
-    this.intilaizeSelectBox();*/
 }
 
 //take care of the expense select box

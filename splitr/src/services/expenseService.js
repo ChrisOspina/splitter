@@ -1,7 +1,7 @@
 import { ExpenseModel } from "../models/ExpenseModel";
 import { UserService } from "./userService";
 
-class ExpenseService {
+export class ExpenseService {
     constructor(userService) {
         this.expenses = [];
         this.userService = userService;

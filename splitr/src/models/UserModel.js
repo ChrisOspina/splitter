@@ -4,7 +4,7 @@ export class UserModel {
             throw new Error('Invalid name provided');
         }
         this.name = name.trim();
-        this.id = UserModel.generateId();
+        this.id = this.generateId();
     }
 
     generateId(){
