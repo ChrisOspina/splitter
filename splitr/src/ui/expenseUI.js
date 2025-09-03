@@ -8,7 +8,7 @@ export class ExpenseUI {
 
         this.initializeUIElements();
         this.bindEventListeners();
-        //this.intilaizeSelectBox();  
+        this.intilaizeSelectBox();  
         //this.populateExpenseSelectBox();
     }
 
@@ -17,6 +17,7 @@ initializeUIElements() {
     this.elements={
         addUserForm: DOMHelpers.getElementbyId("addUserForm"),
         userName: DOMHelpers.getElementbyId("userName"),
+        expenseUserInput: DOMHelpers.getElementbyId("expenseUserInput"),
     }
 }
 
@@ -38,6 +39,9 @@ handleAddUserFormSubmit(e) {
         //Use the service to add the user
         const user = this.userService.addUser(name);
         this.elements.addUserForm.reset();
+
+        // Update the select box with the new user
+        this.addUserToSelectBox(user.name);
         
         console.log("User added:", user);   
         console.log("All Users:", this.userService.getUserCount());   
@@ -48,7 +52,15 @@ handleAddUserFormSubmit(e) {
     }
 }
 
-//take care of the expense select box
 
+intilaizeSelectBox(){
+    const defaultOption = new Option("Select User", "");
+    this.elements.expenseUserInput.addEventListener(defaultOption);
+}
+
+addUserToSelectBox(userName){
+    const option = DOMHelpers.createOption(userName, userName);
+    this.elements.expenseUserInput.add(option);
+}
 
 }
