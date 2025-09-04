@@ -1,4 +1,5 @@
 import { DOMHelpers } from "./DOMHelpers.js";
+import { showSuccessToast, showErrorToast } from "../utils/toastUtil.js";
 
 export class ExpenseUI {
 
@@ -43,12 +44,11 @@ handleAddUserFormSubmit(e) {
         // Update the select box with the new user
         this.addUserToSelectBox(user.name);
         
-        console.log("User added:", user);   
-        console.log("All Users:", this.userService.getUserCount());   
-
+        showSuccessToast(`User ${user.name} added successfully`);
 
     }catch(error){
         console.error("Error adding user:", error);
+        showErrorToast(error.message);
     }
 }
 
