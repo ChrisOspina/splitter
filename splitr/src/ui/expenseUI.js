@@ -23,6 +23,7 @@ initializeUIElements() {
         expenseAmountInput: DOMHelpers.getElementbyId("expenseAmountInput"),
         expenseDescriptionInput: DOMHelpers.getElementbyId("expenseDescriptionInput"),
         paymentList: DOMHelpers.getElementbyId("paymentList"),
+        calculateBtn: DOMHelpers.getElementbyId("calculateBtn"),
     }
 }
 
@@ -34,6 +35,11 @@ bindEventListeners(){
 
     this.elements.addExpenseForm.addEventListener("submit", (e) => {
         this.handleAddExpense(e);});
+
+    this.elements.calculateBtn.addEventListener("click", (e) => {
+        this.handleCalculate();
+        showSuccessToast("Settlements calculated. Check console for details.");
+    })
 }
 
 handleAddUserFormSubmit(e) {
@@ -86,7 +92,7 @@ handleAddExpense(e){
         const expense = this.expenseService.addExpense(paidBy, amount, description);
 
         //Render the expenses
-        this.renderExpense();
+        this.renderExpense(expense);
         //Reset the form
         this.elements.expenseAmountInput.value = "";
         this.elements.expenseDescriptionInput.value = "";
@@ -104,7 +110,26 @@ handleAddExpense(e){
 }
 
 renderExpense(expense){
+    const text = expense.description !== "No description" ?`${expense.paidBy} paid $${expense.amount} for ${expense.description}`
+    :`${expense.paidBy} paid $${expense.amount}`;
+    const listItem = DOMHelpers.createListItem(text, "expense-item");
 
+    this.elements.paymentList.appendChild(listItem);    
+}
+
+handleCalculate(){
+    try{
+       const result = this.expenseService.simplifyExpenses();
+       this.displayResults(results);
+    }
+    catch(error){
+        console.error("Error calculating expenses:", error);
+        showErrorToast(error.message);
+    }
+}
+
+displayResults(results){
+//resultArea
 }
 
 }

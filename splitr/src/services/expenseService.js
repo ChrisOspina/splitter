@@ -30,5 +30,38 @@ export class ExpenseService {
 
     simplifyExpenses() {
         //TODO: Implement this method to simplify expenses among users
+        console.log("Simplifying expenses", this.expenses);
+
+        //Calculate total expenses
+        const userCount = this.userService.getUserCount();
+        if(userCount === 0){
+            throw new Error("No users available to split expenses");
+        }
+
+        const net = {};
+        const userNames = this.userService.getAllUsers();
+
+        userNames.forEach(user => {
+            net[user] = 0;
+        })
+
+        this.expenses.forEach(expense => {
+           const share = expense/ userCount;
+
+           userNames.forEach(user => {
+            if(user === expense.paidBy){
+                net[user] += (expense.amount - share);
+            }
+           });
+        });
+
+        //Determine who owes whom
+
+        //Match who owes with who receives
+        return this.calculateSettlements(net);
+    }
+
+    calculateSettlements(net){
+        
     }
 }

@@ -11,4 +11,14 @@ export class DOMHelpers {
         return new Option(text, value);
     }
 
+    static createListItem(text, className=""){
+        const li = document.createElement("li");
+        li.textContent = text;
+        if(className){
+            li.className = className;
+        }
+
+        return li;  
+    }
+
 }
