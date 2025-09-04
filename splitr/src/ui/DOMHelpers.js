@@ -25,4 +25,14 @@ export class DOMHelpers {
             element.removeChild(element.firstChild);
         }}
 
+    static appendFragment(parent, items, createItemFn){
+        const fragment = document.createDocumentFragment();
+        items.forEach(item => {
+            const element = createItemFn(item);
+            fragment.appendChild(element);
+        });
+
+        parent.appendChild(fragment);
+    }
+
 }

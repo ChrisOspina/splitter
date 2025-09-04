@@ -62,7 +62,7 @@ export class ExpenseService {
     }
 
     calculateSettlements(net){
-         console.log("Calculating settlements", net);
+        console.log("Calculating settlements", net);
  
         //Declare a results array
         const results = [];
