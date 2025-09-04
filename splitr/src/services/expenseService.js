@@ -46,7 +46,7 @@ export class ExpenseService {
         })
 
         this.expenses.forEach(expense => {
-           const share = expense/ userCount;
+           const share = expense.amount/ userCount;
 
            userNames.forEach(user => {
             if(user === expense.paidBy){
@@ -62,6 +62,42 @@ export class ExpenseService {
     }
 
     calculateSettlements(net){
-        
+         console.log("Calculating settlements", net);
+ 
+        //Declare a results array
+        const results = [];
+
+        //Filter out balanced users
+        const names = Object.keys(net).filter(
+            (name) => Math.abs(net[name]) > 0.01
+        );
+
+        //Sort users by net amount
+        names.sort((a,b) => net[a] - net[b]);
+
+        //Two pointer approach
+        let i = 0; //Who owes the most amount of money
+        let j = names.length -1; //Who is to receive the most amount of money
+
+        while(i < j){
+            const creditor = names[j];  
+            const debtor = names[i];    
+            const settlment = Math.min(-net[debtor], net[creditor]);
+
+            if(settlment > 0.01){
+                net[debtor] += settlment; //Reduce the debt
+                net[creditor] -= settlment; //Reduce the credit
+
+                results.push({from: debtor, to: creditor, amount: settlment}); //Push the result
+            }
+
+            if(Math.abs(net[debtor]) < 0.01){
+                i++; //Move to the next debtor
+            }
+            if(Math.abs(net[creditor]) < 0.01){
+                j--; //Move to the next creditor
+            }
+        }
+        return results;
     }
 }

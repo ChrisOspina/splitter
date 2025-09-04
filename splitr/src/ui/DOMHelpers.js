@@ -17,8 +17,12 @@ export class DOMHelpers {
         if(className){
             li.className = className;
         }
-
         return li;  
     }
+
+    static clearElement(element){
+        while(element.firstChild){
+            element.removeChild(element.firstChild);
+        }}
 
 }

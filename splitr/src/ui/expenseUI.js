@@ -24,6 +24,7 @@ initializeUIElements() {
         expenseDescriptionInput: DOMHelpers.getElementbyId("expenseDescriptionInput"),
         paymentList: DOMHelpers.getElementbyId("paymentList"),
         calculateBtn: DOMHelpers.getElementbyId("calculateBtn"),
+        resultArea: DOMHelpers.getElementbyId("resultArea"),
     }
 }
 
@@ -106,7 +107,6 @@ handleAddExpense(e){
         showErrorToast(error.message);
 
     }
-
 }
 
 renderExpense(expense){
@@ -119,7 +119,7 @@ renderExpense(expense){
 
 handleCalculate(){
     try{
-       const result = this.expenseService.simplifyExpenses();
+       const results = this.expenseService.simplifyExpenses();
        this.displayResults(results);
     }
     catch(error){
@@ -129,7 +129,16 @@ handleCalculate(){
 }
 
 displayResults(results){
-//resultArea
+    console.log("Settlement Results:", results);
+
+    DOMHelpers.clearElement(this.elements.resultArea);
+
+    if(results.length === 0){
+        const noResultsItem = DOMHelpers.createListItem("No settlements needed. All expenses are balanced.", "no-results");
+        this.elements.resultArea.appendChild(noResultsItem);
+        return;
+    }
+
 }
 
 }
