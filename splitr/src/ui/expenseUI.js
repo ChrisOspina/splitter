@@ -18,7 +18,11 @@ initializeUIElements() {
     this.elements={
         addUserForm: DOMHelpers.getElementbyId("addUserForm"),
         userName: DOMHelpers.getElementbyId("userName"),
+        addExpenseForm: DOMHelpers.getElementbyId("addExpenseForm"),
         expenseUserInput: DOMHelpers.getElementbyId("expenseUserInput"),
+        expenseAmountInput: DOMHelpers.getElementbyId("expenseAmountInput"),
+        expenseDescriptionInput: DOMHelpers.getElementbyId("expenseDescriptionInput"),
+        paymentList: DOMHelpers.getElementbyId("paymentList"),
     }
 }
 
@@ -27,6 +31,9 @@ bindEventListeners(){
     this.elements.addUserForm.addEventListener("submit", (e) => {
        this.handleAddUserFormSubmit(e);
     })
+
+    this.elements.addExpenseForm.addEventListener("submit", (e) => {
+        this.handleAddExpense(e);});
 }
 
 handleAddUserFormSubmit(e) {
@@ -47,20 +54,57 @@ handleAddUserFormSubmit(e) {
         showSuccessToast(`User ${user.name} added successfully`);
 
     }catch(error){
-        console.error("Error adding user:", error);
         showErrorToast(error.message);
     }
 }
 
 
 intilaizeSelectBox(){
-    const defaultOption = new Option("Select User", "");
-    this.elements.expenseUserInput.addEventListener(defaultOption);
+    const defaultOption = DOMHelpers.createOption("Select User", "");
+    this.elements.expenseUserInput.add(defaultOption);
 }
 
 addUserToSelectBox(userName){
     const option = DOMHelpers.createOption(userName, userName);
     this.elements.expenseUserInput.add(option);
+}
+
+handleAddExpense(e){
+    e.preventDefault();
+    try{
+        const paidBy = this.elements.expenseUserInput.value.trim();
+        const amount = this.elements.expenseAmountInput.valueAsNumber;
+        const description = this.elements.expenseDescriptionInput.value.trim();
+
+        if(!paidBy){
+            throw new Error("Please select a user who paid the expense");
+        }
+        if(!amount || amount <= 0){
+            throw new Error("Please enter a valid amount greater than zero");
+        }
+
+        const expense = this.expenseService.addExpense(paidBy, amount, description);
+
+        //Render the expenses
+        this.renderExpense();
+        //Reset the form
+        this.elements.expenseAmountInput.value = "";
+        this.elements.expenseDescriptionInput.value = "";
+        //Show success toast
+        showSuccessToast(`Expense of $${expense.amount} added successfully`);
+
+
+    }
+    catch(error){
+        console.error("Error adding expense:", error);
+        showErrorToast(error.message);
+
+    }
+
+}
+
+renderExpense(expense){
+
 }
 
 }

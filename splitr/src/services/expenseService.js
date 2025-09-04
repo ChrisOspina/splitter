@@ -12,7 +12,7 @@ export class ExpenseService {
             throw new Error('paidBy is required to add an expense');
         }
         const expense = new ExpenseModel(paidBy, amount, description);
-        this.expenses.push(expenses);
+        this.expenses.push(expense);
         return expense;
     }
 

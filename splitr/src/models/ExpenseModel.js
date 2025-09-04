@@ -8,11 +8,11 @@ export class ExpenseModel {
             throw new Error('Amount must be greater than zero');
         }
 
+        this.id = this.generateId();
         this.paidBy = paidBy.trim();
         this.amount = parseFloat(amount.toFixed(2));
-        this.timestamp = new Date.toISOString();
+        this.timestamp = new Date().toISOString();
         this.description = description ? description.trim() : null;
-        this.id = ExpenseModel.generateId();
     }  
 
     generateId(){
